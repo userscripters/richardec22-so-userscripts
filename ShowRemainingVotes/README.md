@@ -1,6 +1,6 @@
 # Show Remaining Votes
 
-[Install]()
+[Install](https://github.com/richardec22/so-userscripts/raw/main/ShowRemainingVotes/ShowRemainingVotes.user.js)
 
 Adds a (read-only) item to the top bar of all SE sites that shows your total votes for the day and how many votes you have remaining for the day:
 
