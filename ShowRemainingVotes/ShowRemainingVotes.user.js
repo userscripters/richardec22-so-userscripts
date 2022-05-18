@@ -66,4 +66,18 @@
   else if (availableVotes <= 10) extraStyles = `style="color:#ea8329"`;
 
   e.innerHTML = `<span class="s-topbar--item">&nbsp;<b ${extraStyles}>${availableVotes}</b>&nbsp;left&nbsp;(<b>${totalVotes}</b>&nbsp;total)</span>`;
+
+  // Add the remaining votes item to the votes panel if we're viewing our own profile.
+  const votesPanel = $("#user-panel-votes")[0];
+  if (
+    votesPanel &&
+    location.pathname.includes(`/${StackExchange.options.user.userId}/`)
+  ) {
+    const votePanelItem = document.createElement("div");
+    votePanelItem.setAttribute("class", "flex--item md:fl-auto");
+    votePanelItem.innerHTML = `<div class="fs-body3 fc-dark">${availableVotes}</div>remaining today`;
+    $("#user-panel-votes")[0].children[1].children[1].appendChild(
+      votePanelItem
+    );
+  }
 })();
