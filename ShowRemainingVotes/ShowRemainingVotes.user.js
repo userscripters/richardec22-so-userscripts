@@ -19,13 +19,16 @@
       const text = await $.get(
         `${location.origin}/users/current?tab=votes&sort=${type}&page=${page}`
       );
-      const todaysVotes = text.match(
-        new RegExp(
-          `<span title="${
-            new Date().toISOString().split("T")[0]
-          }.+?" class="relativetime">`,
-          "g"
-        )
+
+      const todaysVotes = (
+        text.match(
+          new RegExp(
+            `<span title="${
+              new Date().toISOString().split("T")[0]
+            }.+?" class="relativetime">`,
+            "g"
+          )
+        ) || []
       ).length;
       votes += todaysVotes;
 
