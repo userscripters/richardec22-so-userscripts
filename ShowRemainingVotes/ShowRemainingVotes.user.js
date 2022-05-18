@@ -8,6 +8,9 @@
 // @include      /^https://(.+\.)?stackoverflow\.com/
 // @include      /^https://(.+\.)?stackexchange\.com/
 //
+// @updateURL    https://github.com/richardec22/so-userscripts/raw/main/ShowRemainingVotes/ShowRemainingVotes.user.js
+// @downloadURL  https://github.com/richardec22/so-userscripts/raw/main/ShowRemainingVotes/ShowRemainingVotes.user.js
+//
 // @grant        none
 // ==/UserScript==
 
