@@ -50,6 +50,31 @@
      */
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+    /**
+     * @summary fetches user votes page
+     * @param {string} type vote type
+     * @param {number} page page of the vote summary
+     * @returns {Promise<string>}
+     */
+    const fetchVotesProfilePage = async (type, page) => {
+        try {
+            const url = new URL(`${location.origin}/users/current`);
+            url.search = new URLSearchParams({
+                page,
+                tab: "votes",
+                sort: type,
+            });
+
+            const res = await fetch(url);
+            if (!res.ok) return "";
+
+            return res.text();
+        } catch (error) {
+            console.debug(`[${scriptName}] failed to get votes:\n${error}`);
+            return "";
+        }
+    };
+
     const throttleBy = 1000;
 
   const getVotes = async (type) => {
@@ -63,9 +88,7 @@
     for (let page = 1; ; page++) {
       increaseThrottle(throttleBy);
 
-      const text = await $.get(
-        `${location.origin}/users/current?tab=votes&sort=${type}&page=${page}`
-      );
+      const text = await fetchVotesProfilePage(type, page);
 
       setTimeout(() => decreaseThrottle(throttleBy), getThrottle());
 
