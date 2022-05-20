@@ -15,13 +15,58 @@
 // ==/UserScript==
 
 (async () => {
+  const scriptName = "show-remaining-votes";
+
+    /**
+     * @summary gets current throttle value
+     * @returns {number}
+     */
+    const getThrottle = () => +(localStorage.getItem(`${scriptName}-throttle`)||"0");
+
+    /**
+     * @summary increases current throttle value
+     * @param {number} throttle new throttle value
+     * @returns {void}
+     */
+    const increaseThrottle = (throttle) => {
+        localStorage.setItem(`${scriptName}-throttle`, getThrottle() + throttle);
+    };
+
+    /**
+     * @summary decreases current throttle value
+     * @param {number} throttle new throttle value
+     * @returns {void}
+     */
+    const decreaseThrottle = (throttle) => {
+        const current = getThrottle();
+        if(current) {
+            localStorage.setItem(`${scriptName}-throttle`, current - throttle);
+        }
+    };
+
+    /**
+     * @summary delays execution
+     * @param {number} ms milliseconds to wait
+     */
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const getVotes = async (type) => {
     let votes = 0;
 
+    const throttleBy = 1000;
+    const currentThrottle = getThrottle();
+    if (currentThrottle) {
+        await delay(currentThrottle);
+    }
+
     for (let page = 1; ; page++) {
+      increaseThrottle(throttleBy);
+
       const text = await $.get(
         `${location.origin}/users/current?tab=votes&sort=${type}&page=${page}`
       );
+
+      setTimeout(() => decreaseThrottle(throttleBy), getThrottle());
 
       const todaysVotes = (
         text.match(
