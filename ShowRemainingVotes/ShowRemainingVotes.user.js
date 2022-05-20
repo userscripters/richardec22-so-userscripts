@@ -16,6 +16,7 @@
 
 (async () => {
   const scriptName = "show-remaining-votes";
+  const maxDailyVotes = 40;
 
     /**
      * @summary gets current throttle value
@@ -132,7 +133,7 @@
 
   const nonDeletedUpvotes = await getVotes("upvote");
   const nonDeletedDownvotes = await getVotes("downvote");
-  const availableVotes = 40 - nonDeletedUpvotes - nonDeletedDownvotes;
+  const availableVotes = maxDailyVotes - nonDeletedUpvotes - nonDeletedDownvotes;
   const totalVotes = await getTotalVotes();
 
   let extraStyles = "";
