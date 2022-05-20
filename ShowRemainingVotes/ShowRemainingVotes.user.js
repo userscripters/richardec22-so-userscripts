@@ -50,10 +50,11 @@
      */
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+    const throttleBy = 1000;
+
   const getVotes = async (type) => {
     let votes = 0;
 
-    const throttleBy = 1000;
     const currentThrottle = getThrottle();
     if (currentThrottle) {
         await delay(currentThrottle);
@@ -98,6 +99,8 @@
     )[1];
     return Number(votes);
   };
+
+  window.addEventListener("beforeunload", () => decreaseThrottle(throttleBy));
 
   const e = document.createElement("li");
   e.innerHTML = `<span class="s-topbar--item">Loading&nbsp;votes...</span>`;
