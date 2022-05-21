@@ -114,13 +114,23 @@
     return votes;
   };
 
+  /**
+   * @summary gets total user votes for the day
+   * @returns {Promise<number>}
+   */
   const getTotalVotes = async () => {
-    const text = await $.get(
-      `${location.origin}/users/current?tab=topactivity`
-    );
-    const votes = await text.match(
+    const res = await fetch(`${location.origin}/users/current?tab=topactivity`);
+    if(!res.ok) {
+        console.debug(`[${scriptName}] failed to fetch total votes`);
+        return 0;
+    }
+
+    const text = await res.text();
+
+    const [, votes = "0"] = text.match(
       /<div class="fs-body3 fc-dark">\s*(\d+)\s*<\/div>\s*today/
-    )[1];
+    ) || [];
+
     return Number(votes);
   };
 
